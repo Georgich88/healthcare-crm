@@ -1,12 +1,12 @@
-package domain.schedule;
-
-import domain.facilities.Room;
-import domain.people.MedicalStaffMember;
-import domain.people.Patient;
-import domain.treatment.Treatment;
+package com.isaev.ee.healthcarecrm.domain.schedule;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.isaev.ee.healthcarecrm.domain.facilities.Room;
+import com.isaev.ee.healthcarecrm.domain.people.MedicalStaffMember;
+import com.isaev.ee.healthcarecrm.domain.people.Patient;
+import com.isaev.ee.healthcarecrm.domain.treatment.Treatment;
 
 /**
  * Time slots for medical treatments appointments.

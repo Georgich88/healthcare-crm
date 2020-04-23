@@ -1,4 +1,4 @@
-package domain.people;
+package com.isaev.ee.healthcarecrm.domain.people;
 
 /**
  * General people information.

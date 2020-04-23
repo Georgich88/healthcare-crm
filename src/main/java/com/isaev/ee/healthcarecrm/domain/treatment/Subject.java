@@ -1,4 +1,4 @@
-package domain.treatment;
+package com.isaev.ee.healthcarecrm.domain.treatment;
 
 /**
  * Reasons for appointments and treatments.

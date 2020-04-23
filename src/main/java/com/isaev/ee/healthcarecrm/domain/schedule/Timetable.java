@@ -1,4 +1,4 @@
-package domain.schedule;
+package com.isaev.ee.healthcarecrm.domain.schedule;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

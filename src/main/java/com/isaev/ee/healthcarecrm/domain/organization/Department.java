@@ -1,9 +1,9 @@
-package domain.organization;
-
-import domain.treatment.Subject;
+package com.isaev.ee.healthcarecrm.domain.organization;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.isaev.ee.healthcarecrm.domain.treatment.Subject;
 
 
 /**
