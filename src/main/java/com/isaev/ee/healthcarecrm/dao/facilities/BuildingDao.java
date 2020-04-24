@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
@@ -29,13 +27,13 @@ public class BuildingDao implements Dao<Building> {
 	private RoomDao roomDao;
 	
 	@Override
-	public Optional<Building> get(UUID id) {
+	public Optional<Building> findById(UUID id) {
 		var entityManager = entityManagerFactory.createEntityManager();
 		return Optional.ofNullable(entityManager.find(Building.class, id));
 	}
 
 	@Override
-	public List<Building> getAll() {
+	public List<Building> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
 		Query query = entityManager.createQuery("SELECT b FROM Building b");
 		return query.getResultList();

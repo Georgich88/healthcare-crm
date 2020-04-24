@@ -1,4 +1,4 @@
-package com.isaev.ee.healthcarecrm.dao.facilities;
+package com.isaev.ee.healthcarecrm.dao.schedule;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,14 +12,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
-import com.isaev.ee.healthcarecrm.domain.facilities.Room;
+import com.isaev.ee.healthcarecrm.domain.schedule.Slot;
 
 @Component
-public class RoomDao implements Dao<Room> {
+public class SlotDao implements Dao<Slot> {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -28,31 +27,31 @@ public class RoomDao implements Dao<Room> {
 	private EntityManagerFactory entityManagerFactory;
 	
 	@Override
-	public Optional<Room> findById(UUID id) {
+	public Optional<Slot> findById(UUID id) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		return Optional.ofNullable(entityManager.find(Room.class, id));
+		return Optional.ofNullable(entityManager.find(Slot.class, id));
 	}
 
 	@Override
-	public List<Room> findAll() {
+	public List<Slot> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Room b");
+		Query query = entityManager.createQuery("SELECT b FROM Slot b");
 		return query.getResultList();
 	}
 
 	@Override
-	public void save(Room room) {
-		executeInsideTransaction(entityManager -> entityManager.persist(room));
+	public void save(Slot slot) {
+		executeInsideTransaction(entityManager -> entityManager.persist(slot));
 	}
 
 	@Override
-	public void update(Room room) {		
-		executeInsideTransaction(entityManager -> entityManager.merge(room));	
+	public void update(Slot slot) {		
+		executeInsideTransaction(entityManager -> entityManager.merge(slot));	
 	}
 
 	@Override
-	public void delete(Room room) {
-		executeInsideTransaction(entityManager -> entityManager.remove(room));		
+	public void delete(Slot slot) {
+		executeInsideTransaction(entityManager -> entityManager.remove(slot));		
 	}
 	
 	private void executeInsideTransaction(Consumer<EntityManager> action) {

@@ -1,4 +1,4 @@
-package com.isaev.ee.healthcarecrm.dao.facilities;
+package com.isaev.ee.healthcarecrm.dao.people;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,51 +8,52 @@ import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
-import com.isaev.ee.healthcarecrm.domain.facilities.Room;
+import com.isaev.ee.healthcarecrm.domain.people.Patient;
 
 @Component
-public class RoomDao implements Dao<Room> {
-
-	@PersistenceContext
-	private EntityManager entityManager;
+public class PatientDao implements Dao<Patient> {
 
 	@PersistenceUnit(unitName = "entityManagerFactory")
 	private EntityManagerFactory entityManagerFactory;
 	
 	@Override
-	public Optional<Room> findById(UUID id) {
+	public Optional<Patient> findById(UUID id) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		return Optional.ofNullable(entityManager.find(Room.class, id));
+		return Optional.ofNullable(entityManager.find(Patient.class, id));
 	}
 
 	@Override
-	public List<Room> findAll() {
+	public List<Patient> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Room b");
+		Query query = entityManager.createQuery("SELECT b FROM Patient b");
 		return query.getResultList();
 	}
 
 	@Override
-	public void save(Room room) {
-		executeInsideTransaction(entityManager -> entityManager.persist(room));
+	public void save(Patient patient) {
+		executeInsideTransaction(entityManager -> {
+			entityManager.persist(patient);});	
+	}
+	
+	public void saveAll(List<Patient> patients) {
+		executeInsideTransaction(entityManager -> patients.forEach(patient -> entityManager.persist(patient)));	
 	}
 
 	@Override
-	public void update(Room room) {		
-		executeInsideTransaction(entityManager -> entityManager.merge(room));	
+	public void update(Patient patient) {
+		executeInsideTransaction(entityManager -> {
+			entityManager.merge(patient);});		
 	}
 
 	@Override
-	public void delete(Room room) {
-		executeInsideTransaction(entityManager -> entityManager.remove(room));		
+	public void delete(Patient patient) {
+		executeInsideTransaction(entityManager -> entityManager.remove(patient));		
 	}
 	
 	private void executeInsideTransaction(Consumer<EntityManager> action) {

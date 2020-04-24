@@ -1,4 +1,4 @@
-package com.isaev.ee.healthcarecrm.dao.facilities;
+package com.isaev.ee.healthcarecrm.dao.schedule;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
@@ -16,43 +15,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
-import com.isaev.ee.healthcarecrm.domain.facilities.Room;
+import com.isaev.ee.healthcarecrm.domain.schedule.Timetable;
 
 @Component
-public class RoomDao implements Dao<Room> {
-
-	@PersistenceContext
-	private EntityManager entityManager;
+public class TimetableDao implements Dao<Timetable> {
 
 	@PersistenceUnit(unitName = "entityManagerFactory")
 	private EntityManagerFactory entityManagerFactory;
 	
+	@Autowired
+	private SlotDao slotDao;
+	
 	@Override
-	public Optional<Room> findById(UUID id) {
+	public Optional<Timetable> findById(UUID id) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		return Optional.ofNullable(entityManager.find(Room.class, id));
+		return Optional.ofNullable(entityManager.find(Timetable.class, id));
 	}
 
 	@Override
-	public List<Room> findAll() {
+	public List<Timetable> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Room b");
+		Query query = entityManager.createQuery("SELECT b FROM Timetable b");
 		return query.getResultList();
 	}
 
 	@Override
-	public void save(Room room) {
-		executeInsideTransaction(entityManager -> entityManager.persist(room));
+	public void save(Timetable timetable) {
+		executeInsideTransaction(entityManager -> {
+			timetable.getSlots().forEach(room -> slotDao.save(room));
+			entityManager.persist(timetable);});	
 	}
 
 	@Override
-	public void update(Room room) {		
-		executeInsideTransaction(entityManager -> entityManager.merge(room));	
+	public void update(Timetable timetable) {
+		executeInsideTransaction(entityManager -> {
+			timetable.getSlots().forEach(room -> slotDao.update(room));
+			entityManager.merge(timetable);});		
 	}
 
 	@Override
-	public void delete(Room room) {
-		executeInsideTransaction(entityManager -> entityManager.remove(room));		
+	public void delete(Timetable timetable) {
+		executeInsideTransaction(entityManager -> entityManager.remove(timetable));		
 	}
 	
 	private void executeInsideTransaction(Consumer<EntityManager> action) {

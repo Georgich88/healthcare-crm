@@ -6,9 +6,9 @@ import java.util.UUID;
 
 public interface Dao<T> {
 
-	Optional<T> get(UUID id);
+	Optional<T> findById(UUID id);
 	
-	List<T> getAll();
+	List<T> findAll();
 	
 	void save(T t);
 	
