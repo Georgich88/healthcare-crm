@@ -26,6 +26,8 @@ public class Building {
     @OneToMany
     private List<Room> rooms = new ArrayList<>();
 
+    // Business logic
+    
     public Room addNewRoom(String roomName) {
         Room room = new Room(roomName);
         this.rooms.add(room);
@@ -56,6 +58,50 @@ public class Building {
 	public List<Room> getRooms() {
 		return rooms;
 	}
+
+	// Object inherited methods	
+	
+	@Override
+	public String toString() {
+		return String.format("Building [id=%s, name=%s, rooms=%s]", id, name, rooms);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Building other = (Building) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (rooms == null) {
+			if (other.rooms != null)
+				return false;
+		} else if (!rooms.equals(other.rooms))
+			return false;
+		return true;
+	}
+	
+	
 		
      
 }
