@@ -20,7 +20,6 @@ public class MedicalStaffPosition {
     private UUID id;
     private String name;
 
-    
     // Constructors
     
  	public MedicalStaffPosition() {
