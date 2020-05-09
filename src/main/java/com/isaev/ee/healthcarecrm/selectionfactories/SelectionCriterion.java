@@ -5,6 +5,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Object used for defining filter conditions.
+ * 
+ * @author Georgy Isaev
+ *
+ * @param <T> the type of filtered element.
+ */
 public class SelectionCriterion<T> {
 
 	// Criterion attributes
