@@ -1,9 +1,11 @@
 package com.isaev.ee.healthcarecrm.selectionfactories;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 
-public interface SelectionFactory {
+import javax.persistence.criteria.CriteriaQuery;
+
+public interface SelectionFactory<T> {
 	
-	CriteriaBuilder createSelection(SelectionCriteria criteria);
+	List<T> select(SelectionCriteria criteria);
 
 }
