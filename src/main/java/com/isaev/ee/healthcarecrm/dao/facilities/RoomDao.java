@@ -14,6 +14,7 @@ import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
 import com.isaev.ee.healthcarecrm.domain.facilities.Room;
@@ -37,7 +38,9 @@ public class RoomDao implements Dao<Room> {
 	public List<Room> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
 		Query query = entityManager.createQuery("SELECT b FROM Room b");
-		return query.getResultList();
+		var resultList = query.getResultList();
+		entityManager.close();
+		return resultList;
 	}
 
 	@Override
@@ -55,6 +58,7 @@ public class RoomDao implements Dao<Room> {
 		executeInsideTransaction(entityManager -> entityManager.remove(room));		
 	}
 	
+	@Transactional
 	private void executeInsideTransaction(Consumer<EntityManager> action) {
 		var entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
@@ -62,9 +66,11 @@ public class RoomDao implements Dao<Room> {
         	transaction.begin();
             action.accept(entityManager);
             transaction.commit(); 
+            entityManager.close();
         }
         catch (RuntimeException e) {
         	transaction.rollback();
+        	entityManager.close();
             throw e;
         }
     }

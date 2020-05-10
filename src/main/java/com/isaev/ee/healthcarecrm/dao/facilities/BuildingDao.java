@@ -13,6 +13,7 @@ import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
 import com.isaev.ee.healthcarecrm.domain.facilities.Building;
@@ -36,7 +37,9 @@ public class BuildingDao implements Dao<Building> {
 	public List<Building> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
 		Query query = entityManager.createQuery("SELECT b FROM Building b");
-		return query.getResultList();
+		var resultList = query.getResultList();
+		entityManager.close();
+		return resultList;
 	}
 
 	@Override
@@ -58,6 +61,7 @@ public class BuildingDao implements Dao<Building> {
 		executeInsideTransaction(entityManager -> entityManager.remove(building));		
 	}
 	
+	@Transactional
 	private void executeInsideTransaction(Consumer<EntityManager> action) {
 		var entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
@@ -65,9 +69,11 @@ public class BuildingDao implements Dao<Building> {
         	transaction.begin();
             action.accept(entityManager);
             transaction.commit(); 
+            entityManager.close();
         }
         catch (RuntimeException e) {
         	transaction.rollback();
+        	entityManager.close();
             throw e;
         }
     }

@@ -33,7 +33,9 @@ public class ClinicDao implements Dao<Clinic> {
 	public List<Clinic> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
 		Query query = entityManager.createQuery("SELECT b FROM Clinic b");
-		return query.getResultList();
+		var resultList = query.getResultList();
+		entityManager.close();
+		return resultList;
 	}
 
 	@Override
@@ -62,6 +64,7 @@ public class ClinicDao implements Dao<Clinic> {
         }
         catch (RuntimeException e) {
         	transaction.rollback();
+        	entityManager.close();
             throw e;
         }
     }
