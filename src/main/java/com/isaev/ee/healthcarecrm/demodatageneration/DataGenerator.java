@@ -45,6 +45,7 @@ public class DataGenerator {
                 new Patient("Floyd", "Joy", "Mayweather"), 
                 new Patient("Evander ", "", "Holyfield "),
                 new Patient("George", "Edward", "Foreman"), 
+                new Patient("George", "Louis", "Chuvalo"),
                 new Patient("William", "Harrison", "Dempsey"),
                 new Patient("Joseph", "Louis", "Barrow"), 
                 new Patient("Emmanuel", "Dapidran", "Pacquiao"));
