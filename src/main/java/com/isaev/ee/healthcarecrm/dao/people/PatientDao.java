@@ -12,6 +12,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
 import com.isaev.ee.healthcarecrm.domain.people.Patient;
@@ -32,7 +33,9 @@ public class PatientDao implements Dao<Patient> {
 	public List<Patient> findAll() {
 		var entityManager = entityManagerFactory.createEntityManager();
 		Query query = entityManager.createQuery("SELECT b FROM Patient b");
-		return query.getResultList();
+		var resultList = query.getResultList();
+		entityManager.close();
+		return resultList;
 	}
 
 	@Override
@@ -62,10 +65,12 @@ public class PatientDao implements Dao<Patient> {
         try {
         	transaction.begin();
             action.accept(entityManager);
-            transaction.commit(); 
+            transaction.commit();
+            entityManager.close();
         }
         catch (RuntimeException e) {
         	transaction.rollback();
+        	entityManager.close();
             throw e;
         }
     }

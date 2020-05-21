@@ -30,13 +30,7 @@ public class DatabaseLoader implements CommandLineRunner {
 	@Autowired
     private MedicalStaffPositionDao medicalStaffPositionDao;	
 	@Autowired
-    private ClinicDao clinicDao;
-	@Autowired
     private PatientDao patientDao;	
-	@Autowired
-    private SlotDao dlotDao;
-	@Autowired
-    private TimetableDao timetableDao;
 	
     @Override
     public void run(String... args) throws Exception {
