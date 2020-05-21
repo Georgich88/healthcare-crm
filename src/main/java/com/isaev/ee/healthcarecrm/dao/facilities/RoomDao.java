@@ -10,9 +10,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,10 +34,9 @@ public class RoomDao implements Dao<Room> {
 	}
 
 	@Override
-	public List<Room> findAll() {
+	public List<Room> findAll(Pageable pageable) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Room b");
-		var resultList = query.getResultList();
+		List<Room> resultList = findAllPageableResult(pageable, entityManager, Room.class);	    
 		entityManager.close();
 		return resultList;
 	}

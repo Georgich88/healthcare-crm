@@ -9,11 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
 import com.isaev.ee.healthcarecrm.domain.schedule.Timetable;
@@ -34,10 +33,9 @@ public class TimetableDao implements Dao<Timetable> {
 	}
 
 	@Override
-	public List<Timetable> findAll() {
+	public List<Timetable> findAll(Pageable pageable) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Timetable b");
-		var resultList = query.getResultList();
+		List<Timetable> resultList = findAllPageableResult(pageable, entityManager, Timetable.class);	    
 		entityManager.close();
 		return resultList;
 	}

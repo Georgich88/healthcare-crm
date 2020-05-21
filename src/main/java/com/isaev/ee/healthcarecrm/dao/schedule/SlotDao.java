@@ -10,10 +10,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
 import com.isaev.ee.healthcarecrm.domain.schedule.Slot;
@@ -34,10 +33,9 @@ public class SlotDao implements Dao<Slot> {
 	}
 
 	@Override
-	public List<Slot> findAll() {
+	public List<Slot> findAll(Pageable pageable) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Slot b");
-		var resultList = query.getResultList();
+		List<Slot> resultList = findAllPageableResult(pageable, entityManager, Slot.class);	    
 		entityManager.close();
 		return resultList;
 	}
