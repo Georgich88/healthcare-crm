@@ -9,10 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
 import com.isaev.ee.healthcarecrm.domain.people.MedicalStaffMember;
@@ -30,10 +29,9 @@ public class MedicalStaffMemberDao implements Dao<MedicalStaffMember> {
 	}
 
 	@Override
-	public List<MedicalStaffMember> findAll() {
+	public List<MedicalStaffMember> findAll(Pageable pageable) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM MedicalStaffMember b");
-		var resultList = query.getResultList();
+		List<MedicalStaffMember> resultList = findAllPageableResult(pageable, entityManager, MedicalStaffMember.class);	    
 		entityManager.close();
 		return resultList;
 	}
