@@ -9,7 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 
 @SpringBootApplication
-@ComponentScan({ "com.isaev.ee.healthcarecrm.components",  "com.isaev.ee.healthcarecrm.dao",  "com.isaev.ee.healthcarecrm.selectionfactories"})
+@ComponentScan({ "com.isaev.ee.healthcarecrm.components", "com.isaev.ee.healthcarecrm.dao",
+		"com.isaev.ee.healthcarecrm.selectionfactories", "com.isaev.ee.healthcarecrm.updatefactories" })
 @EntityScan("com.isaev.ee.healthcarecrm.domain")
 @EnableAutoConfiguration
 public class HealthcareCrmApplication {
@@ -17,10 +18,10 @@ public class HealthcareCrmApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HealthcareCrmApplication.class, args);
 	}
-	
+
 	@Bean
 	public PersistenceAnnotationBeanPostProcessor persistenceBeanPostProcessor() {
-	    return new PersistenceAnnotationBeanPostProcessor();
+		return new PersistenceAnnotationBeanPostProcessor();
 	}
 
 }
