@@ -37,6 +37,11 @@ public class ClinicDao implements Dao<Clinic> {
 	}
 
 	@Override
+	public void saveAll(List<Clinic> clinics) {
+		executeInsideTransaction(entityManager -> clinics.forEach(entityManager::persist));
+	}
+	
+	@Override
 	public void save(Clinic clinic) {
 		executeInsideTransaction(entityManager -> entityManager.persist(clinic));
 	}

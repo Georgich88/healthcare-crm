@@ -43,7 +43,7 @@ public class PatientDao implements Dao<Patient> {
 	}
 	
 	public void saveAll(List<Patient> patients) {
-		executeInsideTransaction(entityManager -> patients.forEach(patient -> entityManager.persist(patient)));	
+		executeInsideTransaction(entityManager -> patients.forEach(entityManager::persist));	
 	}
 
 	@Override

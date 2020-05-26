@@ -37,9 +37,13 @@ public class MedicalStaffMemberDao implements Dao<MedicalStaffMember> {
 	}
 
 	@Override
+	public void saveAll(List<MedicalStaffMember> members) {
+		executeInsideTransaction(entityManager -> members.forEach(entityManager::persist));	
+	}
+	
+	@Override
 	public void save(MedicalStaffMember member) {
-		executeInsideTransaction(entityManager -> {
-			entityManager.persist(member);});	
+		executeInsideTransaction(entityManager -> entityManager.persist(member));	
 	}
 
 	@Override

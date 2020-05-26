@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,6 +42,17 @@ public class BuildingDao implements Dao<Building> {
 		return resultList;
 	}
 
+	
+	@Override
+	public void saveAll(List<Building> buildings) {
+		var rooms = buildings.stream()
+				.map(Building::getRooms)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		executeInsideTransaction(entityManager -> rooms.forEach(entityManager::persist));
+		executeInsideTransaction(entityManager -> buildings.forEach(entityManager::persist));
+	}
+	
 	@Override
 	public void save(Building building) {
 		executeInsideTransaction(entityManager -> {
