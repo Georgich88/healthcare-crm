@@ -1,5 +1,7 @@
 package com.isaev.ee.healthcarecrm.unitsofwork;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class TimetableUnitOfWorkTest {
 		MedicalStaffPosition position = new MedicalStaffPosition("doctor in Oak Clinic");
 		List<MedicalStaffMember> medicalStaff = List.of(new MedicalStaffMember("Jonh", "Bones", "Jones", position));
 		List<Patient> patients = List.of(new Patient("Demetrius", "Mighty Mouse", "Jonson"));
+		
 		medicalStaffPositionDao.save(position);
 		medicalStaffMemberDao.saveAll(medicalStaff);
 		patientDao.saveAll(patients);
@@ -59,7 +62,7 @@ public class TimetableUnitOfWorkTest {
 				LocalDateTime.of(2020, 1, 1, 8, 30), LocalDateTime.of(2020, 1, 1, 1, 30), 
 				room, medicalStaff, patients);
 		
-		unitOfWork.registerNew(new Timetable());
+		assertDoesNotThrow(() -> unitOfWork.registerNew(new Timetable()));
 
 	}
 
