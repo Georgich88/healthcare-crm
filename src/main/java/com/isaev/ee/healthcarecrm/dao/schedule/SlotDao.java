@@ -44,6 +44,10 @@ public class SlotDao implements Dao<Slot> {
 	public void save(Slot slot) {
 		executeInsideTransaction(entityManager -> entityManager.persist(slot));
 	}
+	
+	public void saveAll(List<Slot> slots) {
+		executeInsideTransaction(entityManager -> slots.forEach(entityManager::persist));
+	}
 
 	@Override
 	public void update(Slot slot) {		

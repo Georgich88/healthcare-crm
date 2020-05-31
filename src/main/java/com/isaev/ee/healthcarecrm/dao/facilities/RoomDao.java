@@ -42,6 +42,11 @@ public class RoomDao implements Dao<Room> {
 	}
 
 	@Override
+	public void saveAll(List<Room> rooms) {
+		executeInsideTransaction(entityManager -> rooms.forEach(entityManager::persist));
+	}
+	
+	@Override
 	public void save(Room room) {
 		executeInsideTransaction(entityManager -> entityManager.persist(room));
 	}

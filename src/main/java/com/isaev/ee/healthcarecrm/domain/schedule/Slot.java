@@ -52,8 +52,21 @@ public class Slot {
    		this();
    		this.name = name;
    	}
+   	
+   	
+   	public Slot(String name, String description, String treatment, LocalDateTime startTime, LocalDateTime endTime,
+			Room room, List<MedicalStaffMember> medicalStaff, List<Patient> patients) {
+		this.name = name;
+		this.description = description;
+		this.treatment = treatment;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.room = room;
+		this.medicalStaff = medicalStaff;
+		this.patients = patients;
+	}
 
-   	// Getters and setters
+	// Getters and setters
    	
 	public UUID getId() {
 		return id;

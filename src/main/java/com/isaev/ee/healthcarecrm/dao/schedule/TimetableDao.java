@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -45,6 +46,16 @@ public class TimetableDao implements Dao<Timetable> {
 		executeInsideTransaction(entityManager -> {
 			timetable.getSlots().forEach(room -> slotDao.save(room));
 			entityManager.persist(timetable);});	
+	}
+	
+	@Override
+	public void saveAll(List<Timetable> timetables) {
+		var slots = timetables.stream()
+				.map(Timetable::getSlots)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		executeInsideTransaction(entityManager -> slots.forEach(entityManager::persist));			
+		executeInsideTransaction(entityManager -> timetables.forEach(entityManager::persist));	
 	}
 
 	@Override
