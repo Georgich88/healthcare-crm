@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,14 +35,24 @@ public class BuildingDao implements Dao<Building> {
 	}
 
 	@Override
-	public List<Building> findAll() {
+	public List<Building> findAll(Pageable pageable) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Building b");
-		var resultList = query.getResultList();
+		List<Building> resultList = findAllPageableResult(pageable, entityManager, Building.class);	    
 		entityManager.close();
 		return resultList;
 	}
 
+	
+	@Override
+	public void saveAll(List<Building> buildings) {
+		var rooms = buildings.stream()
+				.map(Building::getRooms)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		executeInsideTransaction(entityManager -> rooms.forEach(entityManager::persist));
+		executeInsideTransaction(entityManager -> buildings.forEach(entityManager::persist));
+	}
+	
 	@Override
 	public void save(Building building) {
 		executeInsideTransaction(entityManager -> {

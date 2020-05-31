@@ -4,16 +4,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
 import com.isaev.ee.healthcarecrm.domain.schedule.Timetable;
@@ -34,10 +34,9 @@ public class TimetableDao implements Dao<Timetable> {
 	}
 
 	@Override
-	public List<Timetable> findAll() {
+	public List<Timetable> findAll(Pageable pageable) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Timetable b");
-		var resultList = query.getResultList();
+		List<Timetable> resultList = findAllPageableResult(pageable, entityManager, Timetable.class);	    
 		entityManager.close();
 		return resultList;
 	}
@@ -47,6 +46,16 @@ public class TimetableDao implements Dao<Timetable> {
 		executeInsideTransaction(entityManager -> {
 			timetable.getSlots().forEach(room -> slotDao.save(room));
 			entityManager.persist(timetable);});	
+	}
+	
+	@Override
+	public void saveAll(List<Timetable> timetables) {
+		var slots = timetables.stream()
+				.map(Timetable::getSlots)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		executeInsideTransaction(entityManager -> slots.forEach(entityManager::persist));			
+		executeInsideTransaction(entityManager -> timetables.forEach(entityManager::persist));	
 	}
 
 	@Override

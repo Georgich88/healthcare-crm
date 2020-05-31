@@ -10,7 +10,8 @@ import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcesso
 
 @SpringBootApplication
 @ComponentScan({ "com.isaev.ee.healthcarecrm.components", "com.isaev.ee.healthcarecrm.dao",
-		"com.isaev.ee.healthcarecrm.selectionfactories", "com.isaev.ee.healthcarecrm.updatefactories" })
+		"com.isaev.ee.healthcarecrm.selectionfactories", "com.isaev.ee.healthcarecrm.updatefactories",
+		"com.isaev.ee.healthcarecrm.identitymaps", "com.isaev.ee.healthcarecrm.unitsofwork" })
 @EntityScan("com.isaev.ee.healthcarecrm.domain")
 @EnableAutoConfiguration
 public class HealthcareCrmApplication {

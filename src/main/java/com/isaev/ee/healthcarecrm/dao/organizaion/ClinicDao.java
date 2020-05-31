@@ -9,9 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.isaev.ee.healthcarecrm.dao.Dao;
@@ -30,14 +29,18 @@ public class ClinicDao implements Dao<Clinic> {
 	}
 
 	@Override
-	public List<Clinic> findAll() {
+	public List<Clinic> findAll(Pageable pageable) {
 		var entityManager = entityManagerFactory.createEntityManager();
-		Query query = entityManager.createQuery("SELECT b FROM Clinic b");
-		var resultList = query.getResultList();
+		List<Clinic> resultList = findAllPageableResult(pageable, entityManager, Clinic.class);	    
 		entityManager.close();
 		return resultList;
 	}
 
+	@Override
+	public void saveAll(List<Clinic> clinics) {
+		executeInsideTransaction(entityManager -> clinics.forEach(entityManager::persist));
+	}
+	
 	@Override
 	public void save(Clinic clinic) {
 		executeInsideTransaction(entityManager -> entityManager.persist(clinic));
