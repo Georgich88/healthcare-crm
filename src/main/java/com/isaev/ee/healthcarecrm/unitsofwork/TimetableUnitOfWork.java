@@ -22,9 +22,6 @@ public class TimetableUnitOfWork implements UnitOfWork<Timetable> {
 
 	@Autowired
 	private TimetableDao timetableDao;
-	@Autowired
-	private SlotDao slotDao;
-
 	private Set<Timetable> newTimetables = Collections.synchronizedSet(new HashSet<Timetable>());
 	private Set<Timetable> dirtyTimetables = Collections.synchronizedSet(new HashSet<Timetable>());
 	private Set<Timetable> removedTimetables = Collections.synchronizedSet(new HashSet<Timetable>());
@@ -95,12 +92,12 @@ public class TimetableUnitOfWork implements UnitOfWork<Timetable> {
 
 	@Transactional
 	private void updateDirty() {
-		newTimetables.forEach(timetableDao::update);
+		dirtyTimetables.forEach(timetableDao::update);
 	}
 
 	@Transactional
 	private void deleteRemoved() {
-		newTimetables.forEach(timetableDao::delete);
+		removedTimetables.forEach(timetableDao::delete);
 	}
 
 }
