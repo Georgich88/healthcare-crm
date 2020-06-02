@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -32,8 +33,8 @@ public class Timetable {
     @Id
     private UUID id;
     private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    @Embedded
+    private DateRange dateRange;
     @OneToOne
     private Clinic clinic;
     
@@ -43,22 +44,48 @@ public class Timetable {
     // Constructors
     
     public Timetable() {
+   		this.id = UUID.randomUUID();
         this.name = "";
         this.slots = new ArrayList<Slot>();
+        this.dateRange = new DateRange();
     }
 
     public Timetable(String name, List<Slot> slots) {
+    	this.id = UUID.randomUUID();
         this.name = name;
         this.slots = slots;
+        this.dateRange = new DateRange();
     }
     
-    // 
+    // Slots methods
     
     public Slot addSlot(String name, String description, String treatment, LocalDateTime startTime, LocalDateTime endTime,
 			Room room, List<MedicalStaffMember> medicalStaff, List<Patient> patients) {
     	Slot slot = new Slot(name, description, treatment, startTime, endTime, room,  medicalStaff, patients);
     	this.slots.add(slot);
     	return slot;
+    }
+    
+    public void calculateDataRangeBySlots() {
+    	
+    	LocalDateTime startTime = null;
+    	LocalDateTime endTime = null;
+    	
+		for (var slot : this.slots) {
+			if (startTime != null && startTime.isAfter(slot.getStartTime())
+					|| startTime == null && slot.getStartTime() != null) {
+				startTime = slot.getStartTime();
+			}
+			if (endTime != null && endTime.isBefore(slot.getEndTime())
+					|| endTime == null && slot.getEndTime() != null) {
+				endTime = slot.getEndTime();
+			}
+    	}
+		
+		if (startTime != null) 
+			this.dateRange.setStartDate(startTime.toLocalDate());
+		if (endTime != null) 
+			this.dateRange.setEndDate(endTime.toLocalDate());    	
     }
 
     // Getters and setters
@@ -72,19 +99,19 @@ public class Timetable {
 	}
 
 	public LocalDate getStartDate() {
-		return startDate;
+		return this.dateRange.getStartDate();
 	}
 
 	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
+		this.dateRange.setStartDate(startDate);
 	}
 
 	public LocalDate getEndDate() {
-		return endDate;
+		return this.dateRange.getEndDate();
 	}
 
 	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
+		this.dateRange.setEndDate(endDate);
 	}
 
 	public Clinic getClinic() {

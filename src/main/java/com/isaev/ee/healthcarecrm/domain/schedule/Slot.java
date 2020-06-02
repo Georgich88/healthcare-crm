@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -14,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.datetime.standard.DateTimeContext;
 
 import com.isaev.ee.healthcarecrm.domain.facilities.Room;
 import com.isaev.ee.healthcarecrm.domain.people.MedicalStaffMember;
@@ -31,9 +33,9 @@ public class Slot {
     private UUID id;
     private String name;
     private String description;
-    private String treatment;    
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String treatment;
+    @Embedded
+    private DateTimeRange dataTimeRange;
     @OneToOne
     private Room room;   
      
@@ -46,6 +48,7 @@ public class Slot {
     
    	public Slot() {
    		this.id = UUID.randomUUID();
+   		this.dataTimeRange = new DateTimeRange();
    	}
        
    	public Slot(String name) {
@@ -56,11 +59,12 @@ public class Slot {
    	
    	public Slot(String name, String description, String treatment, LocalDateTime startTime, LocalDateTime endTime,
 			Room room, List<MedicalStaffMember> medicalStaff, List<Patient> patients) {
-		this.name = name;
+		this();
+   		this.name = name;
 		this.description = description;
 		this.treatment = treatment;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.dataTimeRange.setStartTime(startTime);
+		this.dataTimeRange.setEndTime(endTime);
 		this.room = room;
 		this.medicalStaff = medicalStaff;
 		this.patients = patients;
@@ -101,19 +105,19 @@ public class Slot {
 	}
 
 	public LocalDateTime getStartTime() {
-		return startTime;
+		return this.dataTimeRange.getStartTime();
 	}
 
 	public void setStartTime(LocalDateTime startTime) {
-		this.startTime = startTime;
+		this.dataTimeRange.setStartTime(startTime);
 	}
 
 	public LocalDateTime getEndTime() {
-		return endTime;
+		return this.dataTimeRange.getEndTime();
 	}
 
 	public void setEndTime(LocalDateTime endTime) {
-		this.endTime = endTime;
+		this.dataTimeRange.setEndTime(endTime);
 	}
 
 	public Room getRoom() {
