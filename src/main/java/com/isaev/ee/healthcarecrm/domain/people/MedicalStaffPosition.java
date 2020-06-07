@@ -53,7 +53,7 @@ public class MedicalStaffPosition {
 	
 	@Override
 	public String toString() {
-		return String.format("MedicalStaffPosition [name=%s]", name);
+		return this.name;
 	}
 
 	@Override
