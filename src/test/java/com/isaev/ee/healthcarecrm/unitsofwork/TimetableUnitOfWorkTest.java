@@ -39,7 +39,6 @@ public class TimetableUnitOfWorkTest {
 	
 	@Test
 	void shouldProcedeCRUDOperation() {
-
 		
 		var clinic = new Clinic("Oak Clinic");
 		clinicDao.save(clinic);
@@ -61,8 +60,13 @@ public class TimetableUnitOfWorkTest {
 		timetable.addSlot("injection", "inject vaccine", "virus antibodies", 
 				LocalDateTime.of(2020, 1, 1, 8, 30), LocalDateTime.of(2020, 1, 1, 1, 30), 
 				room, medicalStaff, patients);
+		timetable.addSlot("injection", "inject vaccine", "virus antibodies", 
+				LocalDateTime.of(2020, 2, 1, 8, 30), LocalDateTime.of(2020, 2, 1, 1, 30), 
+				room, medicalStaff, patients);
+		timetable.calculateDataRangeBySlots();
 		
-		assertDoesNotThrow(() -> unitOfWork.registerNew(new Timetable()));
+		assertDoesNotThrow(() -> unitOfWork.registerNew(timetable));
+		assertDoesNotThrow(unitOfWork::commit);
 
 	}
 

@@ -24,6 +24,10 @@ public class MedicalStaffMember extends Person {
 	public MedicalStaffMember() {
 	}
 	
+    public MedicalStaffMember() {
+        this("","","", null);
+    }	
+	
     public MedicalStaffMember(String firstName, String middleName, String lastName, MedicalStaffPosition position) {
         this.setFirstName(firstName);
         this.setMiddleName(middleName);
