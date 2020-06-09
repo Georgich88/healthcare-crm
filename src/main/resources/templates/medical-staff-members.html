@@ -1,0 +1,97 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Healthcare · CRM · Staff</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/cover/">
+
+    <!-- Bootstrap core CSS -->
+<link href="/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Favicons -->
+ <link rel="apple-touch-icon" href="/site/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+ <link rel="icon" href="/site/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+ <link rel="icon" href="/site/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+ <link rel="manifest" href="/site/docs/4.4/assets/img/favicons/manifest.json">
+ <link rel="mask-icon" href="/site/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+ <link rel="icon" href="/site/docs/4.4/assets/img/favicons/favicon.ico">
+ <meta name="msapplication-config" content="/site/docs/4.4/assets/img/favicons/browserconfig.xml">
+ <meta name="theme-color" content="#563d7c">
+
+
+    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=j9GcehAhbUROZdNV1fCAw47xh8sQf3K3mI1QpXnJq_-p_8lV_kdDNznHdrQlfd0hKoVoi9RH8D6xdE8SHBjKEMO6Fxxw-pFJ37m2P-icDkY" charset="UTF-8"></script><style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/dist/css/healthcare-crm.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="masthead mb-auto">
+    <div class="inner">
+      <h3 class="masthead-brand">CRM</h3>
+      <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link " href="/">Home</a>
+        <a class="nav-link" href="/clinics">Clinics</a>
+        <a class="nav-link" href="/patients">Patients</a>
+        <a class="nav-link active" href="/medical-staff-members">Staff</a>
+      </nav>
+    </div>
+  </header>
+
+  <main role="main" class="inner cover">
+    <div class="my-3 p-3 bg-black rounded shadow-sm">
+        <div th:if="${emptyList}">
+        <h5 style="font-style: italic;"> Oops, no result is found. Try
+            something else or try again later.</h5>
+        </div>
+        <table class="table table-dark" id="medical-staff-members">
+        <thead>
+            <tr>
+            <tr>
+                <th scope="col">First</th>
+                <th scope="col">Middle</th>
+                <th scope="col">Last</th>
+                <th scope="col">Position</th>
+            </tr>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="medical-staff-member-item" th:each="member : ${members}" >
+            <td th:text="${member.firstName}"></td>
+            <td th:text="${member.middleName}"></td>
+            <td th:text="${member.lastName}"></td>
+            <td th:text="${member.position}"></td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+  </main>
+
+  <footer class="mastfoot mt-auto">
+    <div class="inner">
+      <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

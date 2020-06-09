@@ -21,6 +21,8 @@ public class MedicalStaffMember extends Person {
     private MedicalStaffPosition position;
 
     // Constructors
+	public MedicalStaffMember() {
+	}
 	
     public MedicalStaffMember(String firstName, String middleName, String lastName, MedicalStaffPosition position) {
         this.setFirstName(firstName);
@@ -29,15 +31,23 @@ public class MedicalStaffMember extends Person {
         this.position = position;
     }
 
-	// Object inherited methods	
+    // Getters and setters
     
+	public MedicalStaffPosition getPosition() {
+		return position;
+	}
+
+	public void setPosition(MedicalStaffPosition position) {
+		this.position = position;
+	}    
+    
+	// Object inherited methods	   
+
 	@Override
 	public String toString() {
 		return String.format(
 				"MedicalStaffMember [getFirstName()=%s, getMiddleName()=%s, getLastName()=%s, position=%s]",
 				getFirstName(), getMiddleName(), getLastName(), position);
 	}
-    
-    
 
 }
